@@ -22,6 +22,7 @@ algorithms = {
     'rmsprop': optim.rmsprop,
     'rprop': optim.rprop,
     'sgd': optim.sgd,
+    'lbfgs': optim.lbfgs,
 }
 
 with open('tests.json', 'r') as f:

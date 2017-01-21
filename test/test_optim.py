@@ -36,12 +36,12 @@ class TestOptim(TestCase):
         initial_dist = params.data.dist(solution)
 
         def eval():
+            optimizer.zero_grad()
             loss = rosenbrock(params)
             loss.backward()
             return loss
 
         for i in range(2000):
-            optimizer.zero_grad()
             optimizer.step(eval)
             old_fn(lambda _: (rosenbrock(params_t), drosenbrock(params_t)),
                     params_t, state)
@@ -273,6 +273,12 @@ class TestOptim(TestCase):
             lambda weight, bias: optim.Rprop(
                 self._build_params_dict(weight, bias, lr=1e-2),
                 lr=1e-3)
+        )
+
+    def test_lbfgs(self):
+        self._test_rosenbrock(
+            lambda params: optim.LBFGS(params),
+            wrap_old_fn(old_optim.lbfgs)
         )
 
     def test_invalid_param_type(self):
